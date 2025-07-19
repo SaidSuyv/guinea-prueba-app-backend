@@ -1,0 +1,10 @@
+services:
+  backend:
+    build: .
+    container_name: guinea_app_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    command: npm start
