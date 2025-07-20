@@ -4,13 +4,26 @@ const { sequelize } = require('../models')
 
 // Routes
 const authRouter = require('./routes/auth')
+const userRouter = require('./routes/user')
+
+// Middlewares
+const authMiddleware = require('./middlewares/auth')
 
 // Server configuration
 const app = express()
 const port = process.env.PORT || 8000;
 
 app.use(express.json())
+
 app.use('/auth', authRouter)
+
+app.use(
+  ['/user'],
+  authMiddleware
+);
+
+// User routes that require authentication
+app.use('/user', userRouter)
 
 // Root route for testing
 // This route can be used to check if the server is running
