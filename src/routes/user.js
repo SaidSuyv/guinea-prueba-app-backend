@@ -1,7 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { User, Person } = require('../../models');
-const { where } = require('sequelize');
+
+router.get('/', async (req, res) => {
+  const users = await User.findAll({
+    include: {
+      model: Person,
+      attributes: ['name', 'lastname', 'email' ]
+    }
+  });
+  res.status(200).json(users);
+});
 
 router.delete('/delete', async (req, res) => {
   try {

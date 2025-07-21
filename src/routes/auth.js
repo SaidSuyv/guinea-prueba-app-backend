@@ -19,10 +19,15 @@ router.post('/register', async (req, res) => {
     if (
       !name || !lastname ||
       !email || !gender ||
-      !birthdate || !email.includes('@') ||
+      !birthdate ||
       !username || !password
     ) {
-      return res.status(400).json({ error: 'Username and password are required' });
+      return res.status(400).json({ error: 'Please complete the required fields' });
+    }
+
+    // Validate email format
+    if(!email.includes('@') || !email.includes('.')) {
+      return res.status(400).json({ error: 'Invalid email format' });
     }
 
     // Check if user already exists
@@ -62,7 +67,12 @@ router.post('/register', async (req, res) => {
     // The secret key should be stored securely in environment variables or a secure vault
     const token = user.generateAuthToken();
 
-    res.status(201).json({ success: true , token });
+    res.status(201).json({ success: true , token, user: {
+      person_id: user.person_id,
+      name: person.name,
+      lastname: person.lastname,
+      email: person.email
+    }});
   }
   catch(err)
   {

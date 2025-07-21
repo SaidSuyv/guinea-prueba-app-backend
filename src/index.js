@@ -15,12 +15,12 @@ const port = process.env.PORT || 8000;
 
 app.use(express.json())
 
-app.use('/auth', authRouter)
-
 app.use(
-  ['/user'],
+  ['/user', '/auth/logout'],
   authMiddleware
 );
+
+app.use('/auth', authRouter)
 
 // User routes that require authentication
 app.use('/user', userRouter)
